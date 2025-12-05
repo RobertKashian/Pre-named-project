@@ -1,0 +1,49 @@
+server:
+  applicationConnectors:
+    - type: "http"
+      port: 7000
+      maxRequestHeaderSize: "16KiB"
+      maxResponseHeaderSize: "16KiB"
+
+
+environmentName: "{{environment.name}}"
+
+authenticationConfig:
+  authEndpoint: "{{auth-service.endpoint.internal}}"
+  apiKey: "{{auth-service.apiKey}}"
+
+database:
+  - connectionPoolPrefix: "pre-named-project-connection-pool"
+    datasourceType: POSTGRES
+    databaseName: ""
+    factory:
+      user: "{{pre-named-project.database.username}}"
+      password: "{{pre-named-project.database.password}}"
+      url: "{{pre-named-project.database.jdbc}}"
+      driverClass: org.postgresql.Driver
+      maxWaitForConnection: 1s
+      maxConnectionAge: 1m
+      initialSize: 8
+      minSize: 8
+      maxSize: 32
+      validationInterval: 1s
+      validationQueryTimeout: 5s
+      properties:
+        charset: UTF-8
+        applicationName: pre_named_project
+        socketTimeout: 60
+
+logging:
+  level: INFO
+  loggers:
+    "io.dropwizard.server.ServerFactory":
+      level: INFO
+      additive: false
+      aooebders:
+        - type: "console"
+
+    "liquibase":
+      level: INFO
+      additive: false
+      aooebders:
+        - type: "console"
